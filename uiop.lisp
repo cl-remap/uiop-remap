@@ -43,9 +43,13 @@
 
 (defmethod remap-open ((remap uiop) (path string)
                        &key read write append create &allow-other-keys)
-  (cl:open path
-           :direction (compute-direction read write)
-           :element-type '(unsigned-byte 8)))
+  (let* ((direction (compute-direction read write))
+         (stream (cl:open path :direction direction
+                          :element-type '(unsigned-byte 8)
+                          :if-does-not-exist (when create :create))))
+    (unless (null append)
+      (file-position stream (file-length stream)))
+    stream))
 
 (defvar *buffer-size* 4096)
 
@@ -54,7 +58,9 @@
     (let ((abs (absolute-or-wild! p)))
       (if (wild-pathname-p abs)
           (apply #'remap-cat remap (remap-dir remap abs 'name '<))
-          (with-open-file (f abs :element-type 'character)
-            (let* ((s (make-string *buffer-size*))
-                   (r (read-sequence s f)))
-              (write-sequence s *standard-output* :end r)))))))
+          (with-open-file (file abs :element-type 'character)
+            (let* ((str (make-string *buffer-size*))
+                   (len (read-sequence str :stream file)))
+              (write-sequence str
+                              :stream *standard-output*
+                              :end len)))))))
