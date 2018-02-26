@@ -3,7 +3,7 @@
 ;;  Thomas de Grivel <thoxdg@gmail.com> +33614550127
 ;;
 
-(in-package :comon-lisp-user)
+(in-package :common-lisp-user)
 
 (defpackage :remap.system
   (:use :cl :asdf))
