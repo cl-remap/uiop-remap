@@ -39,8 +39,16 @@
     (uiop:chdir abs)
     (values)))
 
-(defmethod remap-open ((remap uiop) (path string) &key read write append create &allow-other-keys)
-  (error "UIOP does not support cl-stream streams."))
+(defun compute-direction (read write)
+  (cond ((and read write) :io)
+        (read :input)
+        (write :output)))
+
+(defmethod remap-open ((remap uiop) (path string)
+                       &key read write append create &allow-other-keys)
+  (cl:open path
+           :direction (compute-direction read write)
+           :element-type '(unsigned-byte 8)))
 
 (defvar *buffer-size* 4096)
 
