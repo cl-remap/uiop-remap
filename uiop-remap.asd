@@ -5,28 +5,18 @@
 
 (in-package :common-lisp-user)
 
-(defpackage :remap.system
+(defpackage :uiop-remap.system
   (:use :cl :asdf))
 
-(in-package :remap.system)
+(in-package :uiop-remap.system)
 
-(defsystem :remap
-  :name "remap"
-  :author "Thomas de Grivel <thoxdg@gmail.com>"
-  :version "0.2"
-  :description "modular transactional file system"
-  :depends-on ("babel-stream"
-               "cffi-dirent"
-               "cffi-unistd"
-               "cl-stream"
-               "unistd-stdio"
-               "local-time"
-               "rollback"
-               "split-sequence"
+(defsystem :uiop-remap
+  :name "uiop-remap"
+  :author "Thomas de Grivel <thoxdg@gmail.com> +33614550127"
+  :version "0.1"
+  :description "UIOP interface to REMAP."
+  :depends-on ("remap"
                "uiop")
   :components
   ((:file "package")
-   (:file "remap" :depends-on ("package"))
-   (:file "shell" :depends-on ("remap"))
-   (:file "uiop" :depends-on ("remap"))
-   (:file "unistd" :depends-on ("remap"))))
+   (:file "uiop" :depends-on ("package"))))

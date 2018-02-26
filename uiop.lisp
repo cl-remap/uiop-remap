@@ -3,16 +3,13 @@
 ;;  Thomas de Grivel <thoxdg@gmail.com> +33614550127
 ;;
 
-(in-package :remap)
+(in-package :uiop-remap)
 
 (defclass uiop (remap)
   ())
 
-(defvar *remap-uiop*
+(defvar *remap*
   (make-instance 'uiop))
-
-(defparameter *remap*
-  *remap-uiop*)
 
 (defmethod remap-cwd ((remap uiop))
   (namestring (uiop:getcwd)))
