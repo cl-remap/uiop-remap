@@ -58,18 +58,3 @@
             (let* ((s (make-string *buffer-size*))
                    (r (read-sequence s f)))
               (write-sequence s *standard-output* :end r)))))))
-
-(defvar *fds*
-  '())
-
-(deftype mode () 'fixnum)
-
-#+nil
-(defmethod open (path &key append create exclusive non-blocking read
-                        truncate write)
-  (declare (type boolean append exclusive non-blocking read truncate write)
-           (type (or null mode) create))
-  )
-
-(defun cat (&rest inputs &key (> #\-))
-  (values > inputs))
