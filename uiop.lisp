@@ -5,16 +5,19 @@
 
 (in-package :uiop-remap)
 
-(defclass uiop (remap)
+(defclass uiop-remap (remap)
   ())
 
-(defvar *remap*
-  (make-instance 'uiop))
+(defvar *uiop-remap*
+  (make-instance 'uiop-remap))
 
-(defmethod remap-cwd ((remap uiop))
+(defvar *remap*
+  *uiop-remap*)
+
+(defmethod remap-cwd ((remap uiop-remap))
   (namestring (uiop:getcwd)))
 
-(defmethod remap-dir ((remap uiop) (path string) (sort null)
+(defmethod remap-dir ((remap uiop-remap) (path string) (sort null)
                       (order null))
   (let ((wild (or (when (wild-pathname-p path)
                     path)
@@ -28,10 +31,10 @@
     (or (uiop:directory-exists-p abs)
         (error "No such directory: ~S" path))))
 
-(defmethod remap-home ((remap uiop) (user null))
+(defmethod remap-home ((remap uiop-remap) (user null))
   (user-homedir-pathname))
 
-(defmethod remap-cd ((remap uiop) (directory string))
+(defmethod remap-cd ((remap uiop-remap) (directory string))
   (let ((abs (absolute-dir! directory)))
     (uiop:chdir abs)
     (values)))
@@ -41,7 +44,7 @@
         (read :input)
         (write :output)))
 
-(defmethod remap-open ((remap uiop) (path string)
+(defmethod remap-open ((remap uiop-remap) (path string)
                        &key read write append create &allow-other-keys)
   (let* ((direction (compute-direction read write))
          (stream (cl:open path :direction direction
@@ -53,7 +56,7 @@
 
 (defvar *buffer-size* 4096)
 
-(defmethod remap-cat ((remap uiop) &rest paths)
+(defmethod remap-cat ((remap uiop-remap) &rest paths)
   (dolist (p paths)
     (let ((abs (absolute-or-wild! p)))
       (if (wild-pathname-p abs)

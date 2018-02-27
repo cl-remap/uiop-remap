@@ -10,5 +10,5 @@
         :cl-stream
         :remap)
   #.(cl-stream:shadowing-import-from)
-  (:export #:*remap*
-           #:uiop))
+  (:export #:*uiop-remap*
+           #:uiop-remap))
